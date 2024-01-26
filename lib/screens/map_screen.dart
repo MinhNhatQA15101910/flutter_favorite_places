@@ -48,6 +48,10 @@ class _MapScreenState extends State<MapScreen> {
           initialZoom: 16,
         ),
         children: [
+          TileLayer(
+            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            userAgentPackageName: 'dev.fleaflet.flutter_map.example',
+          ),
           MarkerLayer(
             markers: [
               Marker(
