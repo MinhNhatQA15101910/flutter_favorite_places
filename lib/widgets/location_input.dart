@@ -18,6 +18,17 @@ class _LocationInputState extends State<LocationInput> {
   PlaceLocation? _pickedLocation;
   var _isGettingLocation = false;
 
+  String get locationImage {
+    if (_pickedLocation == null) {
+      return '';
+    }
+
+    final lng = _pickedLocation!.longitude;
+    final lat = _pickedLocation!.latitude;
+
+    return 'https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-l-a+f00($lng,$lat)/$lng,$lat,14/500x300?access_token=pk.eyJ1IjoiZG9taW5obmhhdDIwMDMiLCJhIjoiY2xydTB2cnVqMGNibTJrcDFiNXRjN3N4ZiJ9.-DHYngV7hjqTT__N7u5Ruw';
+  }
+
   void _getCurrentLocation() async {
     Location location = Location();
 
@@ -61,11 +72,9 @@ class _LocationInputState extends State<LocationInput> {
 
     setState(() {
       _pickedLocation =
-          PlaceLocation(latitude: lat!, longitude: lng!, address: address);
+          PlaceLocation(latitude: lat, longitude: lng, address: address);
       _isGettingLocation = false;
     });
-
-    print(address);
   }
 
   @override
@@ -76,6 +85,15 @@ class _LocationInputState extends State<LocationInput> {
             color: Theme.of(context).colorScheme.onBackground,
           ),
     );
+
+    if (_pickedLocation != null) {
+      previewContent = Image.network(
+        locationImage,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+      );
+    }
 
     if (_isGettingLocation) {
       previewContent = const CircularProgressIndicator();
