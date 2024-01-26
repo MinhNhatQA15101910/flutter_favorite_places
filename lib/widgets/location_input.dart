@@ -73,8 +73,11 @@ class _LocationInputState extends State<LocationInput> {
     final address = resData['display_name'];
 
     setState(() {
-      _pickedLocation =
-          PlaceLocation(latitude: lat, longitude: lng, address: address);
+      _pickedLocation = PlaceLocation(
+        latitude: lat,
+        longitude: lng,
+        address: address,
+      );
       _isGettingLocation = false;
     });
 
