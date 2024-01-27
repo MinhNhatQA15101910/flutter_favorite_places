@@ -24,6 +24,8 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
+  LatLng? _pickedLocation;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,6 +48,11 @@ class _MapScreenState extends State<MapScreen> {
             widget.location.longitude,
           ),
           initialZoom: 16,
+          onTap: (position, point) {
+            setState(() {
+              _pickedLocation = point;
+            });
+          },
         ),
         children: [
           TileLayer(
@@ -53,19 +60,22 @@ class _MapScreenState extends State<MapScreen> {
             userAgentPackageName: 'dev.fleaflet.flutter_map.example',
           ),
           MarkerLayer(
-            markers: [
-              Marker(
-                point: LatLng(
-                  widget.location.latitude,
-                  widget.location.longitude,
-                ),
-                child: Icon(
-                  Icons.location_pin,
-                  color: Colors.red.shade700,
-                  size: 60,
-                ),
-              ),
-            ],
+            markers: (_pickedLocation == null && widget.isSelecting)
+                ? []
+                : [
+                    Marker(
+                      point: _pickedLocation ??
+                          LatLng(
+                            widget.location.latitude,
+                            widget.location.longitude,
+                          ),
+                      child: Icon(
+                        Icons.location_pin,
+                        color: Colors.red.shade700,
+                        size: 60,
+                      ),
+                    ),
+                  ],
           ),
         ],
       ),
