@@ -36,7 +36,9 @@ class _MapScreenState extends State<MapScreen> {
         actions: [
           if (widget.isSelecting)
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pop(_pickedLocation);
+              },
               icon: const Icon(Icons.save),
             ),
         ],
@@ -48,11 +50,13 @@ class _MapScreenState extends State<MapScreen> {
             widget.location.longitude,
           ),
           initialZoom: 16,
-          onTap: (position, point) {
-            setState(() {
-              _pickedLocation = point;
-            });
-          },
+          onTap: !widget.isSelecting
+              ? null
+              : (position, point) {
+                  setState(() {
+                    _pickedLocation = point;
+                  });
+                },
         ),
         children: [
           TileLayer(
@@ -70,7 +74,7 @@ class _MapScreenState extends State<MapScreen> {
                             widget.location.longitude,
                           ),
                       child: Icon(
-                        Icons.location_pin,
+                        Icons.location_on,
                         color: Colors.red.shade700,
                         size: 60,
                       ),
